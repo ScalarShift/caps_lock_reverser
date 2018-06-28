@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Caps Lock Reverser</title>
+</head>
+<body>
+
+  <textarea id="input" rows="10" cols="50">ENTER YOUR TEXT HERE. i'LL DO THE REST.</textarea><br>
+  <button id="submit">Submit</button>
+  <input type="radio" id="reverse" name="type" >Reverse</input>
+  <input type="radio" id="normal" name="type" checked>Normal</input><br>
+  <textarea id="output" rows="10" cols="50"></textarea>
+
+  <script>
+    let submitButton = document.getElementById("submit");
+    let inputBox = document.getElementById("input");
+    let outputBox = document.getElementById("output");
+    let str = inputBox.value;
+
+    function upperCase(match, offset, string){
+      return match.toUpperCase();
+    }
+
+    function chooseHandler(){
+      return (document.getElementById("reverse").checked)? reverseCase: regularCase;
+    }
+    
+    let reverseCase = function(str){
+      str = str.split("");
+      for(let i = 0;i < str.length;i++){
+        if(str[i] === str[i].toLowerCase()){
+          str[i] = str[i].toUpperCase();
+        }else
+          str[i] = str[i].toLowerCase();
+      }
+      str = str.join("");
+      return str;
+    }
+
+   let regularCase = function(str){
+      str = inputBox.value.toLowerCase().split(" ");
+      str[0] = str[0].replace(/[a-z]/,upperCase); 
+      for(let i = 1;i < str.length; i++){
+        if (str[i] === "i") str[i] = "I";
+        if (str[i] === "i" && str[i+1] === "\'") str[i] = "I\'";
+        let previousChar = str[i-1].charAt(str[i-1].length-1);
+        if(previousChar === "." || previousChar === "?" || previousChar === "!"){
+          str[i] = str[i].replace(/[a-z]/,upperCase);
+        }
+      }
+      str = str.join(" ");
+      return str;
+    }
+
+    
+    submitButton.addEventListener("click", () => {outputBox.textContent = ((document.getElementById
+
+("reverse").checked)? reverseCase: regularCase)(str);});
+
+    
+  </script>
+
+</body>
+</html>
